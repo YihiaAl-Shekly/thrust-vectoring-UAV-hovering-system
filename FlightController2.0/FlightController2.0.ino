@@ -48,10 +48,14 @@ void setup(void)
 
 void loop(void)
 {
+<<<<<<< HEAD
   /* Get a new sensor event */
   sensors_event_t event;
   bno.getEvent(&event);
    
+=======
+
+>>>>>>> 69d80ea3b52e5e48fb54d76b82267ebdb479cc25
   pitchINPUT = pulseIn(A0, HIGH);
   rollINPUT = pulseIn(A1, HIGH);
   yawINPUT = pulseIn(A2, HIGH);
