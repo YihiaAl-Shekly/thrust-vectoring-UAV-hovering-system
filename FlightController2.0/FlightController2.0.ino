@@ -11,11 +11,11 @@ double rollINPUT;
 double yawINPUT;
 double stateINPUT;
 
-Servo myservo;
 Servo myservo1;
 Servo myservo2;
 Servo myservo3;
 Servo myservo4;
+Servo myservo5;
 
 void setup(void)
 {
@@ -39,7 +39,7 @@ void setup(void)
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
 
-  myservo.attach(11);
+  myservo5.attach(11);
   myservo1.attach(10);
   myservo2.attach(9);
   myservo3.attach(4);
@@ -48,28 +48,24 @@ void setup(void)
 
 void loop(void)
 {
-
+  /* Get a new sensor event */
+  sensors_event_t event;
+  bno.getEvent(&event);
    
-
-  
   pitchINPUT = pulseIn(A0, HIGH);
   rollINPUT = pulseIn(A1, HIGH);
   yawINPUT = pulseIn(A2, HIGH);
   stateINPUT = pulseIn(A3, HIGH);
-
-
-  myservo.write(pitchINPUT); 
+  
   myservo1.write(pitchINPUT); 
   myservo2.write(pitchINPUT); 
   myservo3.write(pitchINPUT); 
   myservo4.write(pitchINPUT); 
+  myservo5.write(pitchINPUT); 
   
-  
-  /* Get a new sensor event */
-  sensors_event_t event;
-  bno.getEvent(&event);
+  Serial.print(pid(1,1));
   // imu debug
-  /* Display the floating point data */
+  /* Display the floating point data 
   Serial.print("X: ");
   Serial.print(event.orientation.x, 4);
   Serial.print("\tY: ");
@@ -87,7 +83,6 @@ void loop(void)
     Serial.print("  ");
     Serial.println(stateINPUT);
   */
-  //delay(100);
 
   
 }
