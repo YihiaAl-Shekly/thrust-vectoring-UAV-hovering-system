@@ -49,9 +49,6 @@ void setup(void)
 void loop(void)
 {
 
-   
-
-  
   pitchINPUT = pulseIn(A0, HIGH);
   rollINPUT = pulseIn(A1, HIGH);
   yawINPUT = pulseIn(A2, HIGH);
