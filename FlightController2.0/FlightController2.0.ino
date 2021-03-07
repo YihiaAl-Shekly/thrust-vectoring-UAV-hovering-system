@@ -1,3 +1,7 @@
+/*
+ * 
+*/
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
@@ -30,8 +34,8 @@ int period = 50;  //Refresh rate period of the loop is 50ms
 float yaw_kp = 2;
 float yaw_ki = 0.05;
 float yaw_kd = 10;
-float yaw_desired_angle ;
-///////////////////////////////////////////////////////
+float yaw_desired_angle , yawAdd, yaw; 
+/////////////////////////////////////////////////////////////
 
 void setup(void)
 {
@@ -98,14 +102,16 @@ void loop(void)
   }
 
 
-
-  float yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
+  // creating the  yaw_desired_angle  
+  yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
   if (abs(yawAdd) > 1) {
     yaw_desired_angle  = yaw_desired_angle + yawAdd;
   }
-
   //Serial.println(yaw_desired_angle);
-  float yaw = map (event.orientation.x, 0, 360, -360, 360);
+
+
+  // creating the modified yaw true angel (heading)
+  yaw = map (event.orientation.x, 0, 360, -360, 360);
   if (yaw > 1) {
     yaw = yaw - 360;
   } else {
