@@ -18,19 +18,19 @@ class PID_Controls {
 
       float pid_p = error * p;
       float pid_i = pid_i + (i * error);
-      float pid_d = (d * old_Error / period);
+      float pid_d = (d * ((error - old_Error) / period));
 
       float PID_out = pid_p + pid_i + pid_d;
-      PID_out * -1;
 
-      if (PID_out < 2000) {
+      if (PID_out > 2000) {
         //PID_out = 2000;
       }
-      if (PID_out > 1000) {
+      if (PID_out < 1000) {
         //PID_out = 1000;
       }
 
       return PID_out;
+      
       old_Error = error;
     }
 
