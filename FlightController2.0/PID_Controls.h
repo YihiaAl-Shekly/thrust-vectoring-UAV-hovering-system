@@ -1,14 +1,15 @@
-
-
+/*
+ * PID calculation class 
+ * by ; alshekly 
+ * call .val and feed 
+ *           pid gains              (float p, float i, float d, 
+ *           maped radio input       float intended_Val, 
+ *           IMU axis angle          float actual_Val, 
+ *           Refresh rate            int period)
+*/
 class PID_Controls {
   public:
     //control
-
-    int period = 50;  //Refresh rate period of the loop is 50ms
-
-
-
-
     double val (float p, float i, float d, float intended_Val, float actual_Val, int period) {
 
       float error = intended_Val - actual_Val;
