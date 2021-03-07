@@ -34,7 +34,7 @@ int period = 50;  //Refresh rate period of the loop is 50ms
 float yaw_kp = 2;
 float yaw_ki = 0.05;
 float yaw_kd = 10;
-float yaw_desired_angle , yawAdd, yaw; 
+float yaw_desired_angle , yawAdd, yaw, yawPID; 
 /////////////////////////////////////////////////////////////
 
 void setup(void)
@@ -117,13 +117,13 @@ void loop(void)
   } else {
     yaw = yaw + 360;
   }
-  Serial.println(yaw);
+  //Serial.println(yaw);
 
   ///////////////////pid call////////////////
   if (millis() > time + period) {
 
-    //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
-
+    Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
+    yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period);
 
 
   }
@@ -133,8 +133,8 @@ void loop(void)
 
 
   // thrust and yaw output
-  motor1.writeMicroseconds(thrINPUT - (yawINPUT - 1500));
-  motor2.writeMicroseconds(thrINPUT + (yawINPUT - 1500));
+  motor1.writeMicroseconds(thrINPUT - (yawPID - 1500));
+  motor2.writeMicroseconds(thrINPUT + (yawPID - 1500));
 
   /*
     // imu debug
