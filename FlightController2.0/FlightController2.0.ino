@@ -1,5 +1,7 @@
 /*
- * 
+ * VTOL by Thrust-Vectoring flight controller 
+ * 2021/02/27
+ * Yihia Al-Shekly
 */
 
 #include <Wire.h>
