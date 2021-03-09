@@ -1,7 +1,7 @@
 /*
- * VTOL by Thrust-Vectoring flight controller 
- * 2021/02/27
- * Yihia Al-Shekly
+   VTOL by Thrust-Vectoring flight controller
+   2021/02/27
+   Yihia Al-Shekly
 */
 
 #include <Wire.h>
@@ -25,18 +25,18 @@ double stateINPUT;
 // output vals
 Servo motor1;
 Servo motor2;
+Servo myservo1;
+Servo myservo2;
 Servo myservo3;
-Servo myservo4;
-Servo myservo5;
 
 //Variables for time
 float elapsedTime, time, timePrev;
 int period = 50;  //Refresh rate period of the loop is 50ms
 /////////////////// Yaw PID constants ///////////////////////
-float yaw_kp = 2;
-float yaw_ki = 0.05;
-float yaw_kd = 10;
-float yaw_desired_angle , yawAdd, yaw, yawPID; 
+float yaw_kp = 0.5;
+float yaw_ki = 0.00;
+float yaw_kd = 0;
+float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 
 void setup(void)
@@ -63,16 +63,40 @@ void setup(void)
   // def output
   motor1.attach(11);
   motor2.attach(10);
-  myservo5.attach(9);
+  myservo1.attach(9);
+  myservo2.attach(3);
   myservo3.attach(4);
-  myservo4.attach(3);
 
-  motor1.writeMicroseconds(1000);
-  motor2.writeMicroseconds(1000);
+  //motor1.writeMicroseconds(1000);
+  //motor2.writeMicroseconds(1000);
+
+  // servo sequins
+  for (int x = 1000; x < 2000; x++) {
+    myservo1.writeMicroseconds(x);
+    myservo2.writeMicroseconds(x);
+    myservo3.writeMicroseconds(x);
+    delay(1);
+  }
+  for (int x = 2000; x > 1000; x--) {
+    myservo1.writeMicroseconds(x);
+    myservo2.writeMicroseconds(x);
+    myservo3.writeMicroseconds(x);
+    delay(1);
+  }
+  for (int x = 1000; x < 1500; x++) {
+    myservo1.writeMicroseconds(x);
+    myservo2.writeMicroseconds(x);
+    myservo3.writeMicroseconds(x);
+    delay(1);
+  }
+  myservo1.writeMicroseconds(1500);// only using 1 & 2 so far
+  myservo2.writeMicroseconds(1500);
+  myservo3.writeMicroseconds(1500);
+  // end sequins
 
   time = millis();
 
-  delay(5000);
+  delay(1000);
 
 
 }
@@ -104,7 +128,7 @@ void loop(void)
   }
 
 
-  // creating the  yaw_desired_angle  
+  // creating the  yaw_desired_angle
   yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
   if (abs(yawAdd) > 1) {
     yaw_desired_angle  = yaw_desired_angle + yawAdd;
@@ -124,7 +148,7 @@ void loop(void)
   ///////////////////pid call////////////////
   if (millis() > time + period) {
 
-    Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
+    //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
     yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period);
 
 
@@ -134,10 +158,42 @@ void loop(void)
 
 
 
-  // thrust and yaw output
-  motor1.writeMicroseconds(thrINPUT - (yawPID - 1500));
-  motor2.writeMicroseconds(thrINPUT + (yawPID - 1500));
+  /////////////////// thrust and yaw output ///////////////////////////
 
+  thrINPUT = map(thrINPUT, 1000, 2000, 1000, 1300); // thruttel cap
+
+  yawOUT1 = thrINPUT + yawPID;
+
+  //yawOUT1 = map(yawOUT1, 500, 2500, 1000, 2000);
+
+  if (yawOUT1 < 1000) {
+    yawOUT1 = 1000;
+  }
+  if (yawOUT1 > 2000) {
+    yawOUT1 = 2000;
+  }
+
+  motor1.writeMicroseconds(yawOUT1);
+
+
+
+  yawOUT2 = thrINPUT - yawPID;
+
+  //yawOUT2 = map(yawOUT2, 500, 2500, 1000, 2000);
+
+  if (yawOUT2 < 1000) {
+    yawOUT2 = 1000;
+  }
+  if (yawOUT2 > 2000) {
+    yawOUT2 = 2000;
+  }
+
+  motor2.writeMicroseconds(yawOUT2);
+
+
+  Serial.print(yawOUT1);
+  Serial.print("  ");
+  Serial.println(yawOUT2);
   /*
     // imu debug
      //Display the floating point data*
