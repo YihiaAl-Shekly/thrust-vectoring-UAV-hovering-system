@@ -1,11 +1,11 @@
 /*
- * PID calculation class 
- * by ; alshekly 
- * call .val and feed 
- *           pid gains              (float p, float i, float d, 
- *           maped radio input       float intended_Val, 
- *           IMU axis angle          float actual_Val, 
- *           Refresh rate            int period)
+   PID calculation class
+   by ; alshekly
+   call .val and feed
+             pid gains              (float p, float i, float d,
+             maped radio input       float intended_Val,
+             IMU axis angle          float actual_Val,
+             Refresh rate            int period)
 */
 class PID_Controls {
   public:
@@ -13,24 +13,24 @@ class PID_Controls {
     double val (float p, float i, float d, float intended_Val, float actual_Val, int period) {
 
       float error = intended_Val - actual_Val;
-      float old_Error = error - 1;// ?
-
-
+      
       float pid_p = error * p;
       float pid_i = pid_i + (i * error);
       float pid_d = (d * ((error - old_Error) / period));
 
       float PID_out = pid_p + pid_i + pid_d;
 
-      if (PID_out > 2000) {
-        //PID_out = 2000;
+      PID_out = map(PID_out, -150, 150, -500, 500);
+      
+      if (PID_out < -500) {
+        PID_out = -500;
       }
-      if (PID_out < 1000) {
-        //PID_out = 1000;
+      if (PID_out > 500) {
+        PID_out = 500;
       }
 
       return PID_out;
-      
+
       old_Error = error;
     }
 
