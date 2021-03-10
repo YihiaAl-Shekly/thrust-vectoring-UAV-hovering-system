@@ -31,11 +31,11 @@ Servo myservo3;
 
 //Variables for time
 float elapsedTime, time, timePrev;
-int period = 50;  //Refresh rate period of the loop is 50ms
+int period = 10;  //Refresh rate period of the loop is 50ms
 /////////////////// Yaw PID constants ///////////////////////
-float yaw_kp = 0.5;
+float yaw_kp = 0.0;
 float yaw_ki = 0.00;
-float yaw_kd = 0;
+float yaw_kd = 0.5;
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 
@@ -67,8 +67,8 @@ void setup(void)
   myservo2.attach(3);
   myservo3.attach(4);
 
-  //motor1.writeMicroseconds(1000);
-  //motor2.writeMicroseconds(1000);
+  motor1.writeMicroseconds(1000);
+  motor2.writeMicroseconds(1000);
 
   // servo sequins
   for (int x = 1000; x < 2000; x++) {
@@ -111,7 +111,11 @@ void setup(void)
 
 void loop(void)
 {
-  time = millis();
+  // time 
+  timePrev = time;  // the previous time is stored before the actual time read
+  time = millis();  // actual time read
+  elapsedTime = (time - timePrev) / 1000;
+
   // Get a new sensor event
   sensors_event_t event;
   bno.getEvent(&event);
@@ -149,7 +153,7 @@ void loop(void)
   if (millis() > time + period) {
 
     //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
-    yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period);
+    yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, elapsedTime);
 
 
   }
@@ -173,7 +177,7 @@ void loop(void)
     yawOUT1 = 2000;
   }
 
-  motor1.writeMicroseconds(yawOUT1);
+
 
 
 
@@ -188,8 +192,13 @@ void loop(void)
     yawOUT2 = 2000;
   }
 
-  motor2.writeMicroseconds(yawOUT2);
-
+  if (stateINPUT > 1500) {
+    motor1.writeMicroseconds(yawOUT1);
+    motor2.writeMicroseconds(yawOUT2);
+  } else {
+    motor1.writeMicroseconds(1000);
+    motor2.writeMicroseconds(1000);
+  }
 
   Serial.print(yawOUT1);
   Serial.print("  ");
