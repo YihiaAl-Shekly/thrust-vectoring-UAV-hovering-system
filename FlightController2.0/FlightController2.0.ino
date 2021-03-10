@@ -31,11 +31,10 @@ Servo myservo3;
 
 //Variables for time
 float elapsedTime, time, timePrev;
-int period = 10;  //Refresh rate period of the loop is 50ms
 /////////////////// Yaw PID constants ///////////////////////
-float yaw_kp = 0.0;
-float yaw_ki = 0.00;
-float yaw_kd = 0.5;
+float yaw_kp = 0.05;
+float yaw_ki = 0.000;// 0.003
+float yaw_kd = 0.05;
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 
@@ -111,7 +110,7 @@ void setup(void)
 
 void loop(void)
 {
-  // time 
+  // time
   timePrev = time;  // the previous time is stored before the actual time read
   time = millis();  // actual time read
   elapsedTime = (time - timePrev) / 1000;
@@ -150,16 +149,9 @@ void loop(void)
   //Serial.println(yaw);
 
   ///////////////////pid call////////////////
-  if (millis() > time + period) {
 
-    //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
-    yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, elapsedTime);
-
-
-  }
-
-
-
+  //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
+  yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, elapsedTime);
 
 
   /////////////////// thrust and yaw output ///////////////////////////
@@ -176,9 +168,6 @@ void loop(void)
   if (yawOUT1 > 2000) {
     yawOUT1 = 2000;
   }
-
-
-
 
 
   yawOUT2 = thrINPUT - yawPID;
@@ -202,7 +191,10 @@ void loop(void)
 
   Serial.print(yawOUT1);
   Serial.print("  ");
-  Serial.println(yawOUT2);
+  Serial.print(yawOUT2);
+  Serial.print("  ");
+  Serial.println(yawPID);
+
   /*
     // imu debug
      //Display the floating point data*
