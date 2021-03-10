@@ -5,12 +5,12 @@
              pid gains              (float p, float i, float d,
              maped radio input       float intended_Val,
              IMU axis angle          float actual_Val,
-             Refresh rate            int period)
+             Refresh rate            float elapsedTime)
 */
 class PID_Controls {
   public:
     //control
-    float old_Error,pid_i;
+    float old_Error,pid_i,pid_d;
     
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
@@ -22,10 +22,11 @@ class PID_Controls {
       {
         this -> pid_i = pid_i + (i * error);
       }
-      float pid_d = (d * ((error - (this -> old_Error)) / elapsedTime));
 
-      float PID_out = pid_p + this ->pid_i + pid_d;
-
+      this->pid_d = d * ((error - this->old_Error) / elapsedTime);
+      
+      float PID_out = pid_p + this->pid_i + this->pid_d;
+      
       PID_out = map(PID_out, -150, 150, -500, 500);
 
       if (PID_out < -500) {
@@ -34,10 +35,10 @@ class PID_Controls {
       if (PID_out > 500) {
         PID_out = 500;
       }
-
+      this->old_Error = error;
       return PID_out;
-
-      this ->old_Error = error;
+      //return error - this->old_Error;
+      
     }
 
 };
