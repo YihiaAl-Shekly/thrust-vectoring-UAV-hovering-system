@@ -10,18 +10,24 @@
 class PID_Controls {
   public:
     //control
-    double val (float p, float i, float d, float intended_Val, float actual_Val, int period) {
+    float old_Error,pid_i;
+    
+    double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
       float error = intended_Val - actual_Val;
-      
-      float pid_p = error * p;
-      float pid_i = pid_i + (i * error);
-      float pid_d = (d * ((error - old_Error) / period));
 
-      float PID_out = pid_p + pid_i + pid_d;
+      float pid_p = error * p;
+      
+      if (-3 < error < 3)
+      {
+        this -> pid_i = pid_i + (i * error);
+      }
+      float pid_d = (d * ((error - (this -> old_Error)) / elapsedTime));
+
+      float PID_out = pid_p + this ->pid_i + pid_d;
 
       PID_out = map(PID_out, -150, 150, -500, 500);
-      
+
       if (PID_out < -500) {
         PID_out = -500;
       }
@@ -31,7 +37,7 @@ class PID_Controls {
 
       return PID_out;
 
-      old_Error = error;
+      this ->old_Error = error;
     }
 
 };
