@@ -10,20 +10,27 @@
 class PID_Controls {
   public:
     //control
-    float old_Error,pid_i,pid_d;
+    float error,old_Error,pid_i,pid_d;
     
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
-      float error = intended_Val - actual_Val;
-
-      float pid_p = error * p;
-      
-      if (-3 < error < 3)
-      {
-        this -> pid_i = pid_i + (i * error);
+      // untested 
+      float ABS_ERROR = intended_Val - actual_Val;
+      // the vid to the angle looping ater 360 to -360 
+      if (abs(ABS_ERROR) < 360){
+        this->error = ABS_ERROR;
+      }else{
+         this->error = abs(ABS_ERROR) - 720;
       }
 
-      this->pid_d = d * ((error - this->old_Error) / elapsedTime);
+      float pid_p = this->error * p;
+      
+      if (-3 < this->error < 3)
+      {
+        this -> pid_i = pid_i + (i * this->error);
+      }
+
+      this->pid_d = d * ((this->error - this->old_Error) / elapsedTime);
       
       float PID_out = pid_p + this->pid_i + this->pid_d;
       
@@ -35,7 +42,7 @@ class PID_Controls {
       if (PID_out > 500) {
         PID_out = 500;
       }
-      this->old_Error = error;
+      this->old_Error = this->error;
       return PID_out;
       //return error - this->old_Error;
       
