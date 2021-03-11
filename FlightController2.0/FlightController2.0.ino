@@ -32,9 +32,9 @@ Servo myservo3;
 //Variables for time
 float elapsedTime, time, timePrev;
 /////////////////// Yaw PID constants ///////////////////////
-float yaw_kp = 0.05;
-float yaw_ki = 0.000;// 0.003
-float yaw_kd = 0.05;
+float yaw_kp = 0.073; // 0.07
+float yaw_ki = 0.002;// 0.001
+float yaw_kd = 0.065; // 0.05
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 
