@@ -21,7 +21,7 @@ double pitchINPUT;
 double rollINPUT;
 double yawINPUT;
 double stateINPUT;
-
+bool radioInUse = false;
 // output vals
 Servo motor1;
 Servo motor2;
@@ -120,16 +120,23 @@ void loop(void)
   bno.getEvent(&event);
 
   // read RX
-  if (pulseIn(A5, HIGH) > 0) {
-    thrINPUT = pulseIn(A1, HIGH);
-    pitchINPUT = pulseIn(A3, HIGH);
-    rollINPUT = pulseIn(A2, HIGH);
-    yawINPUT = pulseIn(A4, HIGH);
-    stateINPUT = pulseIn(A5, HIGH);
+  if (radioInUse) {
+    if (pulseIn(A5, HIGH) > 0) {
+      thrINPUT = pulseIn(A1, HIGH);
+      pitchINPUT = pulseIn(A3, HIGH);
+      rollINPUT = pulseIn(A2, HIGH);
+      yawINPUT = pulseIn(A4, HIGH);
+      stateINPUT = pulseIn(A5, HIGH);
+    } else {
+      Serial.println("chanels are not connected to analog pins");
+    }
   } else {
-    Serial.println("chanels are not connected to analog pins");
+    thrINPUT = 1000;
+    pitchINPUT = 1500;
+    rollINPUT = 1500;
+    yawINPUT = 1500;
+    stateINPUT = 2000;
   }
-
 
   // creating the  yaw_desired_angle
   yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
