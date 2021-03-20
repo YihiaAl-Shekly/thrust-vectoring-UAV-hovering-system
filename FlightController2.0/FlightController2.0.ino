@@ -37,7 +37,18 @@ float yaw_ki = 0.002;// 0.001
 float yaw_kd = 0.065; // 0.05
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
-
+/////////////////// Pitch PID constants ///////////////////////
+float pitch_kp = 0.073; // 0.07
+float pitch_ki = 0.002;// 0.001
+float pitch_kd = 0.065; // 0.05
+float pitch_desired_angle , pitchAdd, pitch, pitchPID, pitchOUT;
+/////////////////////////////////////////////////////////////
+/////////////////// roll PID constants ///////////////////////
+float roll_kp = 0.073; // 0.07
+float roll_ki = 0.002;// 0.001
+float roll_kd = 0.065; // 0.05
+float roll_desired_angle , rollAdd, roll, rollPID, rollOUT;
+/////////////////////////////////////////////////////////////
 void setup(void)
 {
 
@@ -134,10 +145,18 @@ void loop(void)
     thrINPUT = 1000;
     pitchINPUT = 1500;
     rollINPUT = 1500;
-    yawINPUT = 1500;
+    
+    
+    yawINPUT = 1600;
+    
     stateINPUT = 2000;
   }
 
+  
+  /////////////////////////////////
+  ////////////  YAW   /////////////
+  /////////////////////////////////
+  
   // creating the  yaw_desired_angle
   yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
   if (abs(yawAdd) > 1) {
@@ -147,13 +166,13 @@ void loop(void)
 
 
   // creating the modified yaw true angel (heading)
-  yaw = map (event.orientation.x, 0, 360, -360, 360);
+  yaw = map (event.orientation.x, 0, 360, -180, 180);
   if (yaw > 1) {
-    yaw = yaw - 360;
+    yaw = yaw - 180;
   } else {
-    yaw = yaw + 360;
+    yaw = yaw + 180;
   }
-  //Serial.println(yaw);
+    //Serial.println(yaw);
 
   ///////////////////pid call////////////////
 
@@ -195,13 +214,17 @@ void loop(void)
     motor1.writeMicroseconds(1000);
     motor2.writeMicroseconds(1000);
   }
-
+  Serial.print(" out1 ");
   Serial.print(yawOUT1);
-  Serial.print("  ");
+  Serial.print(" out2 ");
   Serial.print(yawOUT2);
-  Serial.print("  ");
-  Serial.println(yawPID);
-
+  Serial.print(" pid ");
+  Serial.print(yawPID);
+  Serial.print("  yaw_desired_angle");
+  Serial.print(yaw_desired_angle);
+  Serial.print(" - yaw:");
+  Serial.println(yaw);
+  
   /*
     // imu debug
      //Display the floating point data*
