@@ -14,6 +14,16 @@ class PID_Controls {
     
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
+
+      // intendid val to cordanat vector
+
+      // actual val to cordanat vector
+
+      // error is the angle between the tow vectors
+
+
+
+
       
       this->error = intended_Val - actual_Val;
             
