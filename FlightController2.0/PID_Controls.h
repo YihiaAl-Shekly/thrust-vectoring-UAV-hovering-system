@@ -14,17 +14,9 @@ class PID_Controls {
     
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
-      // untested 
-      float ABS_ERROR = intended_Val - actual_Val;
-      // the vid to the angle looping ater 360 to -360 
-      if (abs(ABS_ERROR) < 360){
-        this->error = ABS_ERROR;
-      }else{
-         this->error = abs(ABS_ERROR) - 720;
-      }
-      //
-
       
+      this->error = intended_Val - actual_Val;
+            
       float pid_p = this->error * p;
       
       if (-3 < this->error < 3)
@@ -45,8 +37,8 @@ class PID_Controls {
         PID_out = 500;
       }
       this->old_Error = this->error;
-      return PID_out;
-      //return error - this->old_Error;
+      //return PID_out;
+      return this->error;
       
     }
 
