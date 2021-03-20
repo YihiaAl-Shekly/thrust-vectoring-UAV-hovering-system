@@ -11,21 +11,20 @@ class PID_Controls {
   public:
     //control
     float error,old_Error,pid_i,pid_d;
+    // 0 is x , 1 is y
+    float intended_Vector[1];
+    float actual_Vector[1];
     
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
-
       // intendid val to cordanat vector
-
+      this->intended_Vector[0] =  cos(intended_Val);
+      this->intended_Vector[1] =  sin(intended_Val);
       // actual val to cordanat vector
-
+      this->actual_Vector[0] =  cos(actual_Val);
+      this->actual_Vector[1] =  sin(actual_Val);
       // error is the angle between the tow vectors
-
-
-
-
-      
-      this->error = intended_Val - actual_Val;
+      this->error = acos((intended_Vector[0]*actual_Vector[0])+(intended_Vector[1]*actual_Vector[1]));
             
       float pid_p = this->error * p;
       
