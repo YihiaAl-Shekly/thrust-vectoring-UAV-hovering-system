@@ -17,15 +17,20 @@ class PID_Controls {
     
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
-      // intendid val to cordanat vector
+      
+
+      
+      // intendid val to coordinate vector
       this->intended_Vector[0] =  cos(intended_Val);
       this->intended_Vector[1] =  sin(intended_Val);
-      // actual val to cordanat vector
+      // actual value to coordinate vector
       this->actual_Vector[0] =  cos(actual_Val);
       this->actual_Vector[1] =  sin(actual_Val);
-      // error is the angle between the tow vectors
-      this->error = acos((intended_Vector[0]*actual_Vector[0])+(intended_Vector[1]*actual_Vector[1]));
-            
+      // error is the angle between the two vectors
+      float dot_Product = actual_Vector[0]* intended_Vector[0] + actual_Vector[1]* intended_Vector[1];
+      float cross_Product = actual_Vector[0] *intended_Vector[1] + actual_Vector[1] *intended_Vector[0];
+      this->error =(atan2(abs(cross_Product),dot_Product)) * (180 / PI);    
+       
       float pid_p = this->error * p;
       
       if (-3 < this->error < 3)
