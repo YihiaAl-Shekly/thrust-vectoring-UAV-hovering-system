@@ -147,9 +147,9 @@ void loop(void)
     rollINPUT = 1500;
     
     
-    yawINPUT = 1600;
+    yawINPUT = 1500;
     
-    stateINPUT = 2000;
+    stateINPUT = 1000;
   }
 
   
@@ -218,7 +218,7 @@ void loop(void)
   Serial.print(yawOUT1);
   Serial.print(" out2 ");
   Serial.print(yawOUT2);
-  Serial.print(" pid ");
+  Serial.print(" pid(error) ");
   Serial.print(yawPID);
   Serial.print("  yaw_desired_angle");
   Serial.print(yaw_desired_angle);
