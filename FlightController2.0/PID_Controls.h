@@ -20,7 +20,7 @@ class PID_Controls {
       
 
       
-      // intendid val to coordinate vector
+      // intendid value to coordinate vector
       this->intended_Vector[0] =  cos(intended_Val);
       this->intended_Vector[1] =  sin(intended_Val);
       // actual value to coordinate vector
