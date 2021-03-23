@@ -10,38 +10,37 @@
 class PID_Controls {
   public:
     //control
-    float error,old_Error,pid_i,pid_d;
+    float error, old_Error, pid_i, pid_d;
     // 0 is x , 1 is y
     float intended_Vector[1];
     float actual_Vector[1];
-    
+
     double val (float p, float i, float d, float intended_Val, float actual_Val, float elapsedTime) {
 
-      
 
-      
-      // intendid value to coordinate vector
-      this->intended_Vector[0] =  cos(intended_Val);
-      this->intended_Vector[1] =  sin(intended_Val);
-      // actual value to coordinate vector
-      this->actual_Vector[0] =  cos(actual_Val);
-      this->actual_Vector[1] =  sin(actual_Val);
-      // error is the angle between the two vectors
-      float dot_Product = actual_Vector[0]* intended_Vector[0] + actual_Vector[1]* intended_Vector[1];
-      float cross_Product = actual_Vector[0] *intended_Vector[1] + actual_Vector[1] *intended_Vector[0];
-      this->error =(atan2(abs(cross_Product),dot_Product)) * (180 / PI);    
-       
+      // calculating the error 
+      this->error = abs(min((actual_Val - intended_Val), ((intended_Val + 2 * PI) - actual_Val)));
+      //this->error = atan2(sin(actual_Val-intended_Val), cos(actual_Val-intended_Val)) * 180/PI;
+      if (intended_Val > actual_Val) {
+        this->error = this->error * -1;
+      }
+      // fixing spikes in error value 
+      if (abs(this->error)> 180){
+        this->error = abs(this->error)-360;
+      }
+
+]     //p
       float pid_p = this->error * p;
-      
+      //i
       if (-3 < this->error < 3)
       {
         this -> pid_i = pid_i + (i * this->error);
       }
-
+      //d
       this->pid_d = d * ((this->error - this->old_Error) / elapsedTime);
-      
+
       float PID_out = pid_p + this->pid_i + this->pid_d;
-      
+
       PID_out = map(PID_out, -150, 150, -500, 500);
 
       if (PID_out < -500) {
@@ -51,9 +50,9 @@ class PID_Controls {
         PID_out = 500;
       }
       this->old_Error = this->error;
-      //return PID_out;
-      return this->error;
-      
+      return PID_out;
+      //return this->error;
+
     }
 
 };
