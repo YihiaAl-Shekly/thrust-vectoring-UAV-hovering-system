@@ -156,7 +156,7 @@ void loop(void)
   ////////////  YAW   /////////////
   /////////////////////////////////
 
-  // creating the  yaw_desired_angle
+  // creating the  yaw_desired_angle (-180 to 180)
   yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
   if (abs(yawAdd) > 1) {
     if (yaw_desired_angle > 180) {
