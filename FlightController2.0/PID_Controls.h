@@ -38,7 +38,8 @@ class PID_Controls {
       }
       //d
       this->pid_d = d * ((this->error - this->old_Error) / elapsedTime);
-
+      
+      // pid
       float PID_out = pid_p + this->pid_i + this->pid_d;
 
       PID_out = map(PID_out, -150, 150, -500, 500);
@@ -49,6 +50,8 @@ class PID_Controls {
       if (PID_out > 500) {
         PID_out = 500;
       }
+
+      
       this->old_Error = this->error;
       return PID_out;
       //return this->error;
