@@ -145,23 +145,32 @@ void loop(void)
     thrINPUT = 1000;
     pitchINPUT = 1500;
     rollINPUT = 1500;
-    
-    
-    yawINPUT = 1500;
-    
+
+    yawINPUT = 1600;
+
     stateINPUT = 1000;
   }
 
-  
+
   /////////////////////////////////
   ////////////  YAW   /////////////
   /////////////////////////////////
-  
+
   // creating the  yaw_desired_angle
   yawAdd = map (yawINPUT, 1000, 2000 , -10, 10);
   if (abs(yawAdd) > 1) {
-    yaw_desired_angle  = yaw_desired_angle + yawAdd;
+    if (yaw_desired_angle > 180) {
+      yaw_desired_angle = yaw_desired_angle * -1;
+      yaw_desired_angle  = yaw_desired_angle + yawAdd / 100;
+    }else if (yaw_desired_angle < -180) {
+      yaw_desired_angle = yaw_desired_angle * -1;
+      yaw_desired_angle  = yaw_desired_angle + yawAdd / 100;
+    } else {
+      yaw_desired_angle  = yaw_desired_angle + yawAdd / 100;
+    }
+
   }
+
   //Serial.println(yaw_desired_angle);
 
 
@@ -172,7 +181,7 @@ void loop(void)
   } else {
     yaw = yaw + 180;
   }
-    //Serial.println(yaw);
+  //Serial.println(yaw);
 
   ///////////////////pid call////////////////
 
@@ -224,7 +233,7 @@ void loop(void)
   Serial.print(yaw_desired_angle);
   Serial.print(" - yaw:");
   Serial.println(yaw);
-  
+
   /*
     // imu debug
      //Display the floating point data*
