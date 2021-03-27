@@ -29,7 +29,7 @@ class PID_Controls {
         this->error = abs(this->error)-360;
       }
 
-]     //p
+     //p
       float pid_p = this->error * p;
       //i
       if (-3 < this->error < 3)
