@@ -32,9 +32,9 @@ Servo myservo3;
 //Variables for time
 float elapsedTime, time, timePrev;
 /////////////////// Yaw PID constants ///////////////////////
-float yaw_kp = 0.073; // 0.07
-float yaw_ki = 0.002;// 0.001
-float yaw_kd = 0.065; // 0.05
+float yaw_kp = 0.1; // 0.09
+float yaw_ki = 0.00000;// 0.001
+float yaw_kd = 0.05; // 0.1
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 /////////////////// Pitch PID constants ///////////////////////
@@ -44,9 +44,9 @@ float pitch_kd = 0.065; // 0.05
 float pitch_desired_angle , pitchAdd, pitch, pitchPID, pitchOUT;
 /////////////////////////////////////////////////////////////
 /////////////////// roll PID constants ///////////////////////
-float roll_kp = 0.073; // 0.07
-float roll_ki = 0.002;// 0.001
-float roll_kd = 0.065; // 0.05
+float roll_kp = 0.000; // 0.07
+float roll_ki = 0.00000;// 0.001
+float roll_kd = 0.025; // 0.05
 float roll_desired_angle , rollAdd, roll, rollPID, rollOUT;
 /////////////////////////////////////////////////////////////
 void setup(void)
@@ -142,13 +142,13 @@ void loop(void)
       Serial.println("chanels are not connected to analog pins");
     }
   } else {
-    thrINPUT = 1000;
+    thrINPUT = 1200;
     pitchINPUT = 1500;
     rollINPUT = 1500;
 
-    yawINPUT = 1600;
+    yawINPUT = 1500;
 
-    stateINPUT = 1000;
+    stateINPUT = 2000;
   }
 
 
@@ -217,12 +217,21 @@ void loop(void)
   }
 
   if (stateINPUT > 1500) {
-    motor1.writeMicroseconds(yawOUT1);
-    motor2.writeMicroseconds(yawOUT2);
+    motor1.writeMicroseconds(yawOUT2);
+    motor2.writeMicroseconds(yawOUT1);
   } else {
     motor1.writeMicroseconds(1000);
     motor2.writeMicroseconds(1000);
   }
+
+
+
+
+
+
+
+
+  
   Serial.print(" out1 ");
   Serial.print(yawOUT1);
   Serial.print(" out2 ");
