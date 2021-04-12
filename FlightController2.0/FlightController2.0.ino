@@ -21,7 +21,7 @@ double pitchINPUT;
 double rollINPUT;
 double yawINPUT;
 double stateINPUT;
-bool radioInUse = false;
+bool radioInUse = true;
 // output vals
 Servo motor1;
 Servo motor2;
@@ -32,7 +32,7 @@ Servo myservo3;
 //Variables for time
 float elapsedTime, time, timePrev;
 /////////////////// Yaw PID constants ///////////////////////
-float yaw_kp = 0.1; // 0.09
+float yaw_kp = 0.9; // 0.09
 float yaw_ki = 0.00000;// 0.001
 float yaw_kd = 0.05; // 0.1
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
@@ -142,7 +142,7 @@ void loop(void)
       Serial.println("chanels are not connected to analog pins");
     }
   } else {
-    thrINPUT = 1200;
+    thrINPUT = 1100;
     pitchINPUT = 1500;
     rollINPUT = 1500;
 
