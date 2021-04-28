@@ -131,8 +131,7 @@ void loop(void)
   bno.getEvent(&event);
 
   // read RX
-  if (radioInUse) {
-    if (pulseIn(A5, HIGH) > 0) {
+  if (pulseIn(A5, HIGH) > 0) {
       thrINPUT = pulseIn(A1, HIGH);
       pitchINPUT = pulseIn(A3, HIGH);
       rollINPUT = pulseIn(A2, HIGH);
@@ -141,16 +140,7 @@ void loop(void)
     } else {
       Serial.println("chanels are not connected to analog pins");
     }
-  } else {
-    thrINPUT = 1100;
-    pitchINPUT = 1500;
-    rollINPUT = 1500;
-
-    yawINPUT = 1500;
-
-    stateINPUT = 2000;
-  }
-
+  
 
   /////////////////////////////////
   ////////////  YAW   /////////////
@@ -161,12 +151,12 @@ void loop(void)
   if (abs(yawAdd) > 1) {
     if (yaw_desired_angle > 180) {
       yaw_desired_angle = yaw_desired_angle * -1;
-      yaw_desired_angle  = yaw_desired_angle + yawAdd / 100;
+      yaw_desired_angle  = yaw_desired_angle + yawAdd;
     }else if (yaw_desired_angle < -180) {
       yaw_desired_angle = yaw_desired_angle * -1;
-      yaw_desired_angle  = yaw_desired_angle + yawAdd / 100;
+      yaw_desired_angle  = yaw_desired_angle + yawAdd;
     } else {
-      yaw_desired_angle  = yaw_desired_angle + yawAdd / 100;
+      yaw_desired_angle  = yaw_desired_angle + yawAdd;
     }
 
   }
