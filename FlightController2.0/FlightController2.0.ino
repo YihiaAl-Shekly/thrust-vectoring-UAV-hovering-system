@@ -220,8 +220,81 @@ void loop(void)
 
 
 
+  /////////////////////////////////
+  ////////////  PITCH   /////////////
+  /////////////////////////////////
 
+  // creating the  pitch_desired_angle (-180 to 180)
+  pitch_desired_angle = map (pitchINPUT, 1000, 2000 , -15, 15);
   
+  // creating the modified yaw true angel (heading)
+  pitch = map (event.orientation.y, 0, 360, -180, 180);
+  if (pitch > 1) {
+    pitch = pitch - 180;
+  } else {
+    pitch = pitch + 180;
+  }
+  //Serial.println(yaw);
+  
+  ///////////////////pid call////////////////
+
+  //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
+  pitchPID = PID.val(pitch_kp, pitch_ki, pitch_kd, pitch_desired_angle, pitch, elapsedTime);
+
+
+  /////////////////// pitch output ///////////////////////////
+
+  pitchOUT = 1500 + pitchPID;
+
+  if (pitchOUT < 1000) {
+    pitchOUT = 1000;
+  }
+  if (pitchOUT > 2000) {
+    pitchOUT = 2000;
+  }
+
+  myservo1.writeMicroseconds(pitchOUT);
+
+  /////////////////////////////////
+  ////////////  ROLL   /////////////
+  /////////////////////////////////
+  // creating the  roll_desired_angle (-180 to 180)
+  roll_desired_angle = map (rollINPUT, 1000, 2000 , -15, 15);
+  
+  // creating the modified roll true angel (heading)
+  roll = map (event.orientation.z, 0, 360, -180, 180);
+  if (roll > 1) {
+    roll = roll - 180;
+  } else {
+    roll = roll + 180;
+  }
+  //Serial.println(yaw);
+  
+  ///////////////////pid call////////////////
+
+  //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
+  rollPID = PID.val(roll_kp, roll_ki, roll_kd, roll_desired_angle, roll, elapsedTime);
+
+
+  /////////////////// roll output ///////////////////////////
+
+  rollOUT = 1500 + rollPID;
+
+  if (rollOUT < 1000) {
+    rollOUT = 1000;
+  }
+  if (rollOUT > 2000) {
+    rollOUT = 2000;
+  }
+
+  myservo1.writeMicroseconds(rollOUT);
+
+
+
+
+
+
+  // debug
   Serial.print(" out1 ");
   Serial.print(yawOUT1);
   Serial.print(" out2 ");
