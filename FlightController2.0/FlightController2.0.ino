@@ -38,9 +38,9 @@ float yaw_kd = 0.05; // 0.1
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 /////////////////// Pitch PID constants ///////////////////////
-float pitch_kp = 0.073; // 0.07
-float pitch_ki = 0.002;// 0.001
-float pitch_kd = 0.065; // 0.05
+float pitch_kp = 2.0; // 0.07
+float pitch_ki = 0.00;// 0.001
+float pitch_kd = 1.065; // 0.05
 float pitch_desired_angle , pitchAdd, pitch, pitchPID, pitchOUT;
 /////////////////////////////////////////////////////////////
 /////////////////// roll PID constants ///////////////////////
@@ -225,10 +225,10 @@ void loop(void)
   /////////////////////////////////
 
   // creating the  pitch_desired_angle (-180 to 180)
-  pitch_desired_angle = map (pitchINPUT, 1000, 2000 , -15, 15);
+  pitch_desired_angle = map (pitchINPUT, 1000, 2000 , 25, -25);
   
   // creating the modified yaw true angel (heading)
-  pitch = map (event.orientation.y, 0, 360, -180, 180);
+  pitch = (map (event.orientation.z, 0, 360, -180, 180))-90;
   if (pitch > 1) {
     pitch = pitch - 180;
   } else {
@@ -254,7 +254,7 @@ void loop(void)
   }
 
   myservo1.writeMicroseconds(pitchOUT);
-
+/*
   /////////////////////////////////
   ////////////  ROLL   /////////////
   /////////////////////////////////
@@ -262,7 +262,7 @@ void loop(void)
   roll_desired_angle = map (rollINPUT, 1000, 2000 , -15, 15);
   
   // creating the modified roll true angel (heading)
-  roll = map (event.orientation.z, 0, 360, -180, 180);
+  roll = map (event.orientation.x, 0, 360, -180, 180);
   if (roll > 1) {
     roll = roll - 180;
   } else {
@@ -289,22 +289,20 @@ void loop(void)
 
   myservo1.writeMicroseconds(rollOUT);
 
-
+*/
 
 
 
 
   // debug
   Serial.print(" out1 ");
-  Serial.print(yawOUT1);
-  Serial.print(" out2 ");
-  Serial.print(yawOUT2);
+  Serial.print(pitchOUT);
   Serial.print(" pid(error) ");
-  Serial.print(yawPID);
-  Serial.print("  yaw_desired_angle");
-  Serial.print(yaw_desired_angle);
-  Serial.print(" - yaw:");
-  Serial.println(yaw);
+  Serial.print(pitchPID);
+  Serial.print("  desired_angle");
+  Serial.print(pitch_desired_angle);
+  Serial.print(" - angel:");
+  Serial.println(pitch);
 
   /*
     // imu debug
