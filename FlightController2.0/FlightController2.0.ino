@@ -11,7 +11,7 @@
 #include <Servo.h>
 // including my PID class
 #include "PID_Controls.h"
-PID_Controls PID;
+PID_Controls PID_yaw,PID_pitch,PID_roll;
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
@@ -176,7 +176,7 @@ void loop(void)
   ///////////////////pid call////////////////
 
   //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
-  yawPID = PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, elapsedTime);
+  yawPID = PID_yaw.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, elapsedTime);
 
 
   /////////////////// thrust and yaw output ///////////////////////////
@@ -239,7 +239,7 @@ void loop(void)
   ///////////////////pid call////////////////
 
   //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
-  pitchPID = PID.val(pitch_kp, pitch_ki, pitch_kd, pitch_desired_angle, pitch, elapsedTime);
+  pitchPID = PID_pitch.val(pitch_kp, pitch_ki, pitch_kd, pitch_desired_angle, pitch, elapsedTime);
 
 
   /////////////////// pitch output ///////////////////////////
