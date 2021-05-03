@@ -34,25 +34,25 @@ float elapsedTime, time, timePrev;
 /////////////////// Yaw PID constants ///////////////////////
 float yaw_kp = 0.9; // 0.09
 float yaw_ki = 0.00000;// 0.001
-float yaw_kd = 0.05; // 0.1
+float yaw_kd = 0.05; // 0.05
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 /////////////////// Pitch PID constants ///////////////////////
 float pitch_kp = 2.0; // 0.07
 float pitch_ki = 0.00;// 0.001
-float pitch_kd = 1.065; // 0.05
+float pitch_kd = 0.565; // 0.05
 float pitch_desired_angle , pitchAdd, pitch, pitchPID, pitchOUT;
 /////////////////////////////////////////////////////////////
 /////////////////// roll PID constants ///////////////////////
-float roll_kp = 0.000; // 0.07
+float roll_kp = 2.5000; // 0.07
 float roll_ki = 0.00000;// 0.001
-float roll_kd = 0.025; // 0.05
+float roll_kd = 0.525; // 0.05
 float roll_desired_angle , rollAdd, roll, rollPID, rollOUT;
 /////////////////////////////////////////////////////////////
 void setup(void)
 {
 
-  Serial.begin(115200);
+  Serial.begin(250000);
   // BNO055
   Serial.println("Orientation Sensor Test"); Serial.println("");
   /* Initialise the sensor */
@@ -254,7 +254,10 @@ void loop(void)
   }
 
   myservo1.writeMicroseconds(pitchOUT);
-/*
+
+
+
+
   /////////////////////////////////
   ////////////  ROLL   /////////////
   /////////////////////////////////
@@ -262,7 +265,7 @@ void loop(void)
   roll_desired_angle = map (rollINPUT, 1000, 2000 , -15, 15);
   
   // creating the modified roll true angel (heading)
-  roll = map (event.orientation.x, 0, 360, -180, 180);
+  roll = map (event.orientation.y, 0, 360, -180, 180);
   if (roll > 1) {
     roll = roll - 180;
   } else {
@@ -273,7 +276,7 @@ void loop(void)
   ///////////////////pid call////////////////
 
   //Serial.println(PID.val(yaw_kp, yaw_ki, yaw_kd, yaw_desired_angle, yaw, period));
-  rollPID = PID.val(roll_kp, roll_ki, roll_kd, roll_desired_angle, roll, elapsedTime);
+  rollPID = PID_roll.val(roll_kp, roll_ki, roll_kd, roll_desired_angle, roll, elapsedTime);
 
 
   /////////////////// roll output ///////////////////////////
@@ -287,22 +290,22 @@ void loop(void)
     rollOUT = 2000;
   }
 
-  myservo1.writeMicroseconds(rollOUT);
+  myservo2.writeMicroseconds(rollOUT);
 
-*/
+
 
 
 
 
   // debug
   Serial.print(" out1 ");
-  Serial.print(pitchOUT);
+  Serial.print(rollOUT);
   Serial.print(" pid(error) ");
-  Serial.print(pitchPID);
+  Serial.print(rollPID);
   Serial.print("  desired_angle");
-  Serial.print(pitch_desired_angle);
+  Serial.print(roll_desired_angle);
   Serial.print(" - angel:");
-  Serial.println(pitch);
+  Serial.println(roll);
 
   /*
     // imu debug
