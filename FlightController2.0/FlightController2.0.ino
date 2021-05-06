@@ -181,7 +181,7 @@ void loop(void)
 
   /////////////////// thrust and yaw output ///////////////////////////
 
-  thrINPUT = map(thrINPUT, 1000, 2000, 1000, 1300); // thruttel cap
+  thrINPUT = map(thrINPUT, 1000, 2000, 1000, 2000); // thruttel cap
 
   yawOUT1 = thrINPUT + yawPID;
 
@@ -225,7 +225,7 @@ void loop(void)
   /////////////////////////////////
 
   // creating the  pitch_desired_angle (-180 to 180)
-  pitch_desired_angle = map (pitchINPUT, 1000, 2000 , 25, -25);
+  pitch_desired_angle = map (pitchINPUT, 1000, 2000 , 30, -30);
   
   // creating the modified yaw true angel (heading)
   pitch = (map (event.orientation.z, 0, 360, -180, 180))-90;
@@ -262,7 +262,7 @@ void loop(void)
   ////////////  ROLL   /////////////
   /////////////////////////////////
   // creating the  roll_desired_angle (-180 to 180)
-  roll_desired_angle = map (rollINPUT, 1000, 2000 , -15, 15);
+  roll_desired_angle = map (rollINPUT, 1000, 2000 , +30, -30);
   
   // creating the modified roll true angel (heading)
   roll = map (event.orientation.y, 0, 360, -180, 180);
