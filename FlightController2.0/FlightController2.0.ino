@@ -49,6 +49,7 @@ float roll_ki = 0.0000;// 0.001
 float roll_kd = 1.205; // 0.05
 float roll_desired_angle , rollAdd, roll, rollPID, rollOUT, rollFiltered;
 /////////////////////////////////////////////////////////////
+int filterVall= 35;
 void setup(void)
 {
 
@@ -225,7 +226,7 @@ void loop(void)
   /////////////////////////////////
 
   //filter the noice in the PWM signal
-  if (abs(pitchFiltered-pitchINPUT)>50){
+  if (abs(pitchFiltered-pitchINPUT)>filterVall){
     pitchFiltered= pitchINPUT;
   }
   // creating the  pitch_desired_angle (-180 to 180)
@@ -265,8 +266,14 @@ void loop(void)
   /////////////////////////////////
   ////////////  ROLL   /////////////
   /////////////////////////////////
+  
+  //filter the noice in the PWM signal
+  if (abs(rollFiltered-rollINPUT)>filterVall){
+    rollFiltered= rollINPUT;
+  }
+  
   // creating the  roll_desired_angle (-180 to 180)
-  roll_desired_angle = map (rollINPUT, 1000, 2000 , +30, -30);
+  roll_desired_angle = map (rollFiltered, 1000, 2000 , +30, -30);
   
   // creating the modified roll true angel (heading)
   roll = map (event.orientation.y, 0, 360, -180, 180);
