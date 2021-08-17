@@ -38,15 +38,15 @@ float yaw_kd = 0.05; // 0.05
 float yaw_desired_angle , yawAdd, yaw, yawPID, yawOUT1, yawOUT2;
 /////////////////////////////////////////////////////////////
 /////////////////// Pitch PID constants ///////////////////////
-float pitch_kp = 4.6; // 0.07
+float pitch_kp = 0.6; // 0.07
 float pitch_ki = 0.0000;// 0.001
-float pitch_kd = 1.205; // 0.05
+float pitch_kd = 0.205; // 0.05
 float pitch_desired_angle , pitchAdd, pitch, pitchPID, pitchOUT, pitchFiltered;
 /////////////////////////////////////////////////////////////
 /////////////////// roll PID constants ///////////////////////
-float roll_kp = 4.6000; // 0.07
-float roll_ki = 0.0000;// 0.001
-float roll_kd = 1.205; // 0.05
+float roll_kp = 3.8000; // 0.07
+float roll_ki = 0.00012;// 0.001
+float roll_kd = 6.805; // 0.05
 float roll_desired_angle , rollAdd, roll, rollPID, rollOUT, rollFiltered;
 /////////////////////////////////////////////////////////////
 int filterVall= 35;
