@@ -12,6 +12,8 @@ This project focuses on developing a UAV system leveraging thrust vectoring and 
 - Demonstrate the practical applications of such a system in hover, transition, and forward flight modes.
 - Provide a scalable framework for future UAV designs utilizing similar technology.
 
+![Prototype Frame Assembly](VTOL_Project_Media/IMG_2895.JPG)
+
 ## Applications
 - High-precision delivery systems.
 - Surveillance in confined or urban environments.
