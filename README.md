@@ -100,6 +100,3 @@ Thrust-Vectoring-UAV
 
 ## License
 This project is open-source and available under the [MIT License](LICENSE).
-
-## Acknowledgments
-Special thanks to the development team and supporting institutions for making this project possible.
